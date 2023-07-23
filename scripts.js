@@ -32,10 +32,12 @@ const quizData = [
 ];
 
 let currentQuestion = 0;
+let maxScore = 0;
 
 const questionElement = document.getElementById("question");
-const answerElements = document.querySelectorAll(".answer");
+const answerElements = document.querySelectorAll(".answer")
 const quizElement = document.getElementById("quiz");
+const game = document.getElementById("game")
 const waiting = document.getElementById("waiting")
 const dino = document.getElementById("dino");
 let score = document.getElementById("score")
@@ -65,9 +67,17 @@ function loadQuestion() {
   }
 }
 
+function updateMaxScore() {
+  const maxScoreElement = document.getElementById("maxScore");
+  maxScoreElement.textContent = maxScore;
+}
+
 function checkAnswer(selectedAnswer) {
   if (currentQuestion >= quizData.length) return;
-
+  if (playerScore > maxScore) {
+    maxScore = playerScore;
+    updateMaxScore();
+  }  
   const currentQuizData = quizData[currentQuestion];
   const correctAnswer = currentQuizData.correct;
 
@@ -131,6 +141,8 @@ function jump() {
     }, 300);
   }
 }
+
+game.addEventListener("click", jump);
 
 let isAlive = setInterval(function () {
   let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
