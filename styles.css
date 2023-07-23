@@ -21,7 +21,7 @@
 }
 
 .game {
-  width: 600px;
+  max-width: 600px;
   height: 200px;
   border: 1px solid black;
   margin: auto;
@@ -123,4 +123,9 @@
   font-size: 20px;
   justify-content: center;
   align-items: center;
+}
+
+.record {
+  align-items: center;
+  text-align: center;
 }
