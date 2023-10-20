@@ -43,10 +43,26 @@ const dino = document.getElementById("dino");
 let score = document.getElementById("score")
 let quiz = document.getElementById("quiz")
 const cactus = document.getElementById("cactus");
+let isDinoAlive = true;
+
+function dinoDead() {
+  isDinoAlive = false;
+  dino.style.display = "none";
+  let dinoDead = document.getElementById("dino-dead");
+  dinoDead.style.display = "block";
+}
+
+function dinoAlive() {
+  isDinoAlive = true;
+  dino.style.display = "block";
+  let dinoDead = document.getElementById("dino-dead");
+  dinoDead.style.display = "none";
+}
 
 function startGame() {
   document.getElementById("rules").style.display = "none";
   document.getElementById("game").style.display = "block";
+  playerScore = 0;
 }
 
 function hideElement() {
@@ -95,6 +111,7 @@ function checkAnswer(selectedAnswer) {
     score.innerHTML = `Score <p>${playerScore}</p>`;
     setTimeout(() => {
       cactus.style.display = "block";
+      dinoAlive()
     }, 2000);  
     waiting.style.display = "flex"  
     quizElement.style.display = "none"; 
@@ -103,6 +120,7 @@ function checkAnswer(selectedAnswer) {
     score.innerHTML = "Score <p>0</p>";
     setTimeout(() => {
       cactus.style.display = "flex";
+      dinoAlive()
     }, 2000);    
     waiting.style.display = "flex"
     quizElement.style.display = "none"
@@ -153,6 +171,7 @@ let isAlive = setInterval(function () {
     clearInterval(interval)
     quiz.style.display = "block"
     cactus.style.display = "none"
+    dinoDead();
   }
 }, 10);
 
