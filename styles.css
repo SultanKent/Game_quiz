@@ -139,11 +139,18 @@ button:after {
   height: 40px;
   position: relative;
   top: 110px;
-  left: 580px;
-
   background-image: url("img/cactus1.png");
   background-size: 20px 40px;
+  animation: block 1s infinite linear;
+}
 
+#cactus2 {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  top: 110px;
+  background-image: url("img/cactus1.png");
+  background-size: 20px 50px;
   animation: block 1s infinite linear;
 }
 
@@ -200,12 +207,4 @@ button:after {
 .record {
   align-items: center;
   text-align: center;
-}
-
-@media(max-width: 520px) {
-  .answers {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 }

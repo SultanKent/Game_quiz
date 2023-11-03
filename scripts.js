@@ -35,21 +35,48 @@ let currentQuestion = 0;
 let maxScore = 0;
 
 const questionElement = document.getElementById("question");
-const answerElements = document.querySelectorAll(".answer")
+const answerElements = document.querySelectorAll(".answer");
 const quizElement = document.getElementById("quiz");
-const game = document.getElementById("game")
-const waiting = document.getElementById("waiting")
+const game = document.getElementById("game");
+const waiting = document.getElementById("waiting");
 const dino = document.getElementById("dino");
-let score = document.getElementById("score")
-let quiz = document.getElementById("quiz")
+let score = document.getElementById("score");
+let quiz = document.getElementById("quiz");
 const cactus = document.getElementById("cactus");
+const cactus2 = document.getElementById("cactus2");
 let isDinoAlive = true;
+
+function switchCactus() {
+  if (isDinoAlive) {
+    const newCactus = getRandomCactus();
+    document.getElementById(newCactus).style.display = 'block';
+    currentCactus = newCactus;
+  }
+}
+
+let currentCactus = getRandomCactus();
+
+function getRandomCactus() {
+  const cacti = ['cactus', 'cactus2'];
+  const randomIndex = Math.floor(Math.random() * cacti.length);
+  const selectedCactus = cacti[randomIndex];
+
+  for (let i = 0; i < cacti.length; i++) {
+    document.getElementById(cacti[i]).style.display = 'none';
+  }
+  
+  return selectedCactus;
+}
+
+let cactusInterval = setInterval(switchCactus, 2000);
 
 function dinoDead() {
   isDinoAlive = false;
   dino.style.display = "none";
   let dinoDead = document.getElementById("dino-dead");
   dinoDead.style.display = "block";
+  document.getElementById("cactus").style.display = "none";
+  document.getElementById("cactus2").style.display = "none";
 }
 
 function dinoAlive() {
@@ -62,7 +89,7 @@ function dinoAlive() {
 function startGame() {
   document.getElementById("rules").style.display = "none";
   document.getElementById("game").style.display = "block";
-  playerScore = 0;
+  playerScore = 0; 
 }
 
 function hideElement() {
@@ -110,20 +137,20 @@ function checkAnswer(selectedAnswer) {
     playerScore++;
     score.innerHTML = `Score <p>${playerScore}</p>`;
     setTimeout(() => {
-      cactus.style.display = "block";
-      dinoAlive()
+      document.getElementById(currentCactus).style.display = "block";
+      dinoAlive();
     }, 2000);  
-    waiting.style.display = "flex"  
+    waiting.style.display = "flex";  
     quizElement.style.display = "none"; 
   } else {
     playerScore = 0;
     score.innerHTML = "Score <p>0</p>";
     setTimeout(() => {
-      cactus.style.display = "flex";
-      dinoAlive()
+      document.getElementById(currentCactus).style.display = "block";
+      dinoAlive();
     }, 2000);    
-    waiting.style.display = "flex"
-    quizElement.style.display = "none"
+    waiting.style.display = "flex";
+    quizElement.style.display = "none";
   }
   setTimeout(hideElement, 2000);
   setTimeout(() => {
@@ -145,10 +172,10 @@ let playerScore = 0;
 
 let scoreCounter = () => {
   playerScore++;
-  score.innerHTML = `Score <p>${playerScore}</p>`
-}
+  score.innerHTML = `Score <p>${playerScore}</p>`;
+};
 
-interval = setInterval(scoreCounter, 200)
+interval = setInterval(scoreCounter, 200);
 
 function jump() {
   if (dino.classList != "jump") {
@@ -162,18 +189,22 @@ function jump() {
 
 game.addEventListener("click", jump);
 
-let isAlive = setInterval(function () {
+function checkCollision() {
   let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
   let cactusLeft = parseInt(
-    window.getComputedStyle(cactus).getPropertyValue("left")
+    window.getComputedStyle(document.getElementById(currentCactus)).getPropertyValue("left")
   );
+  
   if (cactusLeft < 50 && cactusLeft > 0 && dinoTop >= 140) {
-    clearInterval(interval)
-    quiz.style.display = "block"
-    cactus.style.display = "none"
+    clearInterval(interval);
+    quiz.style.display = "block";
+    cactus.style.display = "none";
+    cactus2.style.display = "none";
     dinoDead();
   }
-}, 10);
+}
+
+let isAlive = setInterval(checkCollision, 10);
 
 document.addEventListener("keydown", function (event) {
   jump();
